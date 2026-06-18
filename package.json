@@ -1,0 +1,26 @@
+{
+  "name": "heyhomex-load-testing",
+  "version": "1.0.0",
+  "description": "HeyHomex load testing project using k6 and TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild src/tests/buyer-smoke-flow.ts --bundle --platform=neutral --format=esm --external:k6 --external:k6/* --outfile=dist/buyer-smoke-flow.js",
+    "test:smoke": "npm run build && k6 run -e PROFILE=smoke dist/buyer-smoke-flow.js",
+    "test:load": "npm run build && k6 run -e PROFILE=load dist/buyer-smoke-flow.js",
+    "test:stress": "npm run build && k6 run -e PROFILE=stress dist/buyer-smoke-flow.js",
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "k6",
+    "load-testing",
+    "heyhomex"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/k6": "^1.3.0",
+    "esbuild": "^0.28.1",
+    "rimraf": "^6.1.0",
+    "typescript": "^5.9.3"
+  }
+}
