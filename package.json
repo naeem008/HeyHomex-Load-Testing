@@ -4,11 +4,14 @@
   "description": "HeyHomex load testing project using k6 and TypeScript",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild src/tests/buyer-smoke-flow.ts --bundle --platform=neutral --format=esm --external:k6 --external:k6/* --outfile=dist/buyer-smoke-flow.js",
-    "test:smoke": "npm run build && k6 run -e PROFILE=smoke dist/buyer-smoke-flow.js",
-    "test:load": "npm run build && k6 run -e PROFILE=load dist/buyer-smoke-flow.js",
-    "test:stress": "npm run build && k6 run -e PROFILE=stress dist/buyer-smoke-flow.js",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "build:buyer": "esbuild src/tests/buyer-smoke-flow.ts --bundle --platform=neutral --format=esm --external:k6 --external:k6/* --outfile=dist/buyer-smoke-flow.js",
+    "build:register-users": "esbuild src/tests/register-users-from-csv.ts --bundle --platform=neutral --format=esm --external:k6 --external:k6/* --outfile=dist/register-users-from-csv.js",
+    "build": "npm run build:buyer && npm run build:register-users",
+    "test:smoke": "npm run build:buyer && k6 run -e PROFILE=smoke dist/buyer-smoke-flow.js",
+    "test:load": "npm run build:buyer && k6 run -e PROFILE=load dist/buyer-smoke-flow.js",
+    "test:stress": "npm run build:buyer && k6 run -e PROFILE=stress dist/buyer-smoke-flow.js",
+    "test:register-users": "npm run build:register-users && k6 run dist/register-users-from-csv.js"
   },
   "keywords": [
     "k6",
