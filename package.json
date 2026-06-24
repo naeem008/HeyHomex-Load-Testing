@@ -8,10 +8,16 @@
     "build:buyer": "esbuild src/tests/buyer-smoke-flow.ts --bundle --platform=neutral --format=esm --external:k6 --external:k6/* --outfile=dist/buyer-smoke-flow.js",
     "build:register-users": "esbuild src/tests/register-users-from-csv.ts --bundle --platform=neutral --format=esm --external:k6 --external:k6/* --outfile=dist/register-users-from-csv.js",
     "build": "npm run build:buyer && npm run build:register-users",
-    "test:smoke": "npm run build:buyer && k6 run -e PROFILE=smoke dist/buyer-smoke-flow.js",
-    "test:load": "npm run build:buyer && k6 run -e PROFILE=load dist/buyer-smoke-flow.js",
-    "test:stress": "npm run build:buyer && k6 run -e PROFILE=stress dist/buyer-smoke-flow.js",
-    "test:register-users": "npm run build:register-users && k6 run dist/register-users-from-csv.js"
+    "prepare:report:smoke": "node -e \"require('fs').mkdirSync('reports/k6/smoke', { recursive: true })\"",
+    "prepare:report:load": "node -e \"require('fs').mkdirSync('reports/k6/load', { recursive: true })\"",
+    "prepare:report:stress": "node -e \"require('fs').mkdirSync('reports/k6/stress', { recursive: true })\"",
+    "prepare:report:search-5": "node -e \"require('fs').mkdirSync('reports/k6/search-5', { recursive: true })\"",
+    "prepare:report:register-users": "node -e \"require('fs').mkdirSync('reports/k6/register-users', { recursive: true })\"",
+    "test:smoke": "npm run build:buyer && npm run prepare:report:smoke && k6 run -e PROFILE=smoke dist/buyer-smoke-flow.js",
+    "test:load": "npm run build:buyer && npm run prepare:report:load && k6 run -e PROFILE=load dist/buyer-smoke-flow.js",
+    "test:stress": "npm run build:buyer && npm run prepare:report:stress && k6 run -e PROFILE=stress dist/buyer-smoke-flow.js",
+    "test:search-5": "npm run build:buyer && npm run prepare:report:search-5 && k6 run -e PROFILE=search-5 dist/buyer-smoke-flow.js",
+    "test:register-users": "npm run build:register-users && npm run prepare:report:register-users && k6 run -e PROFILE=register-users dist/register-users-from-csv.js"
   },
   "keywords": [
     "k6",
